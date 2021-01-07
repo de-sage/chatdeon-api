@@ -33,5 +33,7 @@ public class SocialMediaUser {
     @OneToMany
     private List<Friend> friends;
 
+    @OneToMany
+    private List<Message> chatHistory;
 
 }
