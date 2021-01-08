@@ -21,5 +21,4 @@ public class Friend {
     @ManyToOne
     @JoinColumn()
     private SocialMediaUser friend;
-
 }
