@@ -1,10 +1,12 @@
 package com.social_media.blog.entity;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -26,6 +28,9 @@ public class SocialMediaUser {
     private String password;
 
     private String profilePicUrl;
+
+    @NotNull
+    private LocalDateTime createdAt;
 
     @OneToMany
     private List<Post> posts;
