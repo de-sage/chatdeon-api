@@ -15,6 +15,9 @@ public class SocialMediaUserCreationDto {
     public String username;
 
     @NotNull
+    public String email;
+
+    @NotNull
     public String password;
 
     @JsonIgnore
