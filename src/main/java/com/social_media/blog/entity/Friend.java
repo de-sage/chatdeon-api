@@ -13,14 +13,12 @@ import javax.persistence.ManyToOne;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Friend {
 
     @Id
-    private int commentId;
+    private int id;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn()
-    private SocialMediaUser socialMediaUser;
-
-    private String comment;
+    private SocialMediaUser friend;
 }

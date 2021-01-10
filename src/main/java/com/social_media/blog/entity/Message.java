@@ -6,21 +6,16 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
-
+@NoArgsConstructor
+public class Message {
     @Id
-    private int commentId;
+    private Integer id;
 
-    @ManyToOne()
-    @JoinColumn()
-    private SocialMediaUser socialMediaUser;
-
-    private String comment;
+    @ManyToOne
+    private SocialMediaUser author;
 }
