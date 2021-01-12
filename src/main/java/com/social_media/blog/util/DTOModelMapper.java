@@ -1,6 +1,7 @@
 package com.social_media.blog.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.istack.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -15,8 +16,10 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Id;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.Collections;
@@ -55,6 +58,8 @@ public class DTOModelMapper extends RequestResponseBodyMethodProcessor {
        }
     }
 
+
+
     @Override
     protected Object readWithMessageConverters(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType) throws IOException, HttpMediaTypeNotSupportedException, HttpMessageNotReadableException {
         for (Annotation ann : parameter.getParameterAnnotations()) {
@@ -64,6 +69,20 @@ public class DTOModelMapper extends RequestResponseBodyMethodProcessor {
             }
         }
         throw new RemoteException();
+    }
+
+    private Object getEntityId(@NotNull Object dto) {
+        for(Field field : dto.getClass().getDeclaredFields()) {
+            if(field.getAnnotation(Id.class) != null) {
+                try {
+                    field.setAccessible(true);
+                    return field.get(dto);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return null;
     }
 
 }
