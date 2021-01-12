@@ -7,7 +7,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.cbor.MappingJackson2CborHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -30,7 +30,7 @@ public class DTOModelMapper extends RequestResponseBodyMethodProcessor {
     private EntityManager entityManager;
 
     public DTOModelMapper(ObjectMapper objectMapper, EntityManager entityManager) {
-        super(Collections.singletonList(new MappingJackson2CborHttpMessageConverter(objectMapper)));
+        super(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
         this.entityManager = entityManager;
     }
 
@@ -43,6 +43,7 @@ public class DTOModelMapper extends RequestResponseBodyMethodProcessor {
     protected void validateIfApplicable(WebDataBinder binder, MethodParameter parameter) {
         binder.validate();
     }
+
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
