@@ -1,5 +1,9 @@
 package com.social_media.blog.repository;
 
-public interface SocialMediaUserRepository {
+
+import com.social_media.blog.entity.SocialMediaUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SocialMediaUserRepository extends JpaRepository<SocialMediaUser, Integer> {
 
 }

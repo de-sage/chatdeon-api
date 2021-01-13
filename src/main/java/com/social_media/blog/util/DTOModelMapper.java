@@ -1,7 +1,7 @@
 package com.social_media.blog.util;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.istack.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -17,19 +17,20 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBody
 
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.rmi.RemoteException;
 import java.util.Collections;
 
 public class DTOModelMapper extends RequestResponseBodyMethodProcessor {
     private static final ModelMapper modelMapper = new ModelMapper();
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
-    public DTOModelMapper(ObjectMapper objectMapper, EntityManager entityManager) {
+
+    public DTOModelMapper(ObjectMapper objectMapper,  EntityManager entityManager) {
         super(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
         this.entityManager = entityManager;
     }
@@ -47,16 +48,15 @@ public class DTOModelMapper extends RequestResponseBodyMethodProcessor {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-       Object dto =  super.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
-       Object id = getEntityId(dto);
-
-       if(id == null) {
-           return modelMapper.map(dto, parameter.getParameterType());
-       } else {
-           Object persistedObject = entityManager.find(parameter.getParameterType(), id);
-           modelMapper.map(dto, persistedObject);
-           return persistedObject;
-       }
+        Object dto = super.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+        Object id = getEntityId(dto);
+        if (id == null) {
+            return modelMapper.map(dto, parameter.getParameterType());
+        } else {
+            Object persistedObject = entityManager.find(parameter.getParameterType(), id);
+            modelMapper.map(dto, persistedObject);
+            return persistedObject;
+        }
     }
 
 
@@ -69,12 +69,12 @@ public class DTOModelMapper extends RequestResponseBodyMethodProcessor {
                 return super.readWithMessageConverters(inputMessage, parameter, dtoType.value());
             }
         }
-        throw new RemoteException();
+        throw new RuntimeException();
     }
 
     private Object getEntityId(@NotNull Object dto) {
-        for(Field field : dto.getClass().getDeclaredFields()) {
-            if(field.getAnnotation(Id.class) != null) {
+        for (Field field : dto.getClass().getDeclaredFields()) {
+            if (field.getAnnotation(Id.class) != null) {
                 try {
                     field.setAccessible(true);
                     return field.get(dto);
