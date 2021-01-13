@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -14,8 +15,9 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 public class Message {
     @Id
-    private Integer id;
+    private int id;
 
     @ManyToOne
+    @JoinColumn()
     private SocialMediaUser author;
 }
