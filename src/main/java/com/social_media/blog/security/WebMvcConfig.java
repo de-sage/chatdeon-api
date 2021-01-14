@@ -15,18 +15,19 @@ import java.util.List;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
-    private final EntityManager enitityManager;
+
+    private final EntityManager entityManager;
 
     @Autowired
     public WebMvcConfig(ApplicationContext applicationContext, EntityManager entityManager) {
         this.applicationContext = applicationContext;
-        this.enitityManager = entityManager;
+        this.entityManager = entityManager;
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         WebMvcConfigurer.super.addArgumentResolvers(resolvers);
         ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().applicationContext(this.applicationContext).build();
-        resolvers.add(new DTOModelMapper(objectMapper, enitityManager));
+        resolvers.add(new DTOModelMapper(objectMapper, entityManager));
     }
 }
